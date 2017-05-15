@@ -1,0 +1,27 @@
+Sub process_directory_of_workbooks()
+    Application.ScreenUpdating = False
+    Dim wbOpen As Workbook
+    Const strPath As String = "MBP:Users:harrylevitt:Desktop:Macr"
+    Dim strFileName As String
+    Debug.Print strPath
+    
+    ChDir strPath
+    'Get FileName
+    strFileName = Dir("")
+    Do While strFileName <> ""
+            Workbooks.Open Filename:=strFileName
+            Range("B1").Select
+            ActiveCell.FormulaR1C1 = "=RC[-1] + 1"
+            Range("B1").Select
+            Selection.AutoFill Destination:=Range("B1:B5"), Type:=xlFillDefault
+            Range("B1:B5").Select
+            'Process Workbooks in any way needed
+            ActiveWorkbook.Save
+            ActiveWorkbook.Close
+            'Get next file in folder
+            strFileName = Dir
+            Debug.Print strFileName
+            'need to save and close each file
+    Loop
+    MsgBox varName & vbCrLf & "Done"
+End Sub
